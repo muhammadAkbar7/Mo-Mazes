@@ -236,4 +236,13 @@ public abstract class BaseDequeTests extends BaseTest {
         assertThat(actual).isEqualTo(1);
         checkInvariants(deque);
     }
+
+    @Test
+    void OutOfBoundsException() {
+        Deque<Integer> deque = createDeque();
+        deque.addFirst(0);
+        deque.addLast(3);
+        deque.addLast(4);
+        int actual = deque.removeLast();
+    }
 }
