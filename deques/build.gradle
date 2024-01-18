@@ -1,5 +1,0 @@
-
-sourceSets.main.studentJava.files = [
-        'deques/LinkedDeque.java',
-        'deques/ArrayDeque.java',
-]
