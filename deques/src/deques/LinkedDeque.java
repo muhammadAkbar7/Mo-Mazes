@@ -19,7 +19,7 @@ public class LinkedDeque<T> extends AbstractDeque<T> {
         size = 0;
     }
 
-    public void addFirst(T item) { // must run in constant time (operations must not involve any looping or recursion). Note: size is provided for you
+    public void addFirst(T item) {
         Node<T> hold = front.next;
         Node<T> addNode = new Node<>(item, front, front.next);
         front.next = addNode;
@@ -27,7 +27,7 @@ public class LinkedDeque<T> extends AbstractDeque<T> {
         size += 1;
     }
 
-    public void addLast(T item) { // must run in constant time (operations must not involve any looping or recursion). Note: size is provided for you
+    public void addLast(T item) {
         Node<T> hold = back.prev;
         Node<T> addNode = new Node<>(item, back.prev, back);
         back.prev = addNode;
@@ -35,7 +35,7 @@ public class LinkedDeque<T> extends AbstractDeque<T> {
         size += 1;
     }
 
-    public T removeFirst() { // must run in constant time (operations must not involve any looping or recursion). Note: size is provided for you
+    public T removeFirst() {
         if (size == 0) {
             return null;
         }
@@ -47,7 +47,7 @@ public class LinkedDeque<T> extends AbstractDeque<T> {
         return removed.value;
     }
 
-    public T removeLast() { // must run in constant time (operations must not involve any looping or recursion). Note: size is provided for you
+    public T removeLast() {
         if (size == 0) {
             return null;
         }
@@ -80,5 +80,5 @@ public class LinkedDeque<T> extends AbstractDeque<T> {
 
     public int size() {
         return size;
-    } // must run in constant time (operations must not involve any looping or recursion). Note: size is provided for you
+    }
 }
