@@ -14,8 +14,10 @@ public class LinkedDeque<T> extends AbstractDeque<T> {
     // Feel free to add any additional fields you may need, though.
 
     public LinkedDeque() { // make sent nodes
-        frontSentinel = new Node<>(null, null, front);
-        backSentinel = new Node<>(null, back, null);
+        // frontSentinel = new Node<>(null, null, front);
+        // backSentinel = new Node<>(null, back, null);
+        frontSentinel = new Node<>(null, null, null);
+        backSentinel = new Node<>(null, null, null);
         frontSentinel.next = backSentinel;
         backSentinel.prev = frontSentinel;
         front = frontSentinel;
@@ -56,6 +58,8 @@ public class LinkedDeque<T> extends AbstractDeque<T> {
         backSentinel.prev = removed.next;
         removed.prev.next = backSentinel;
         size -= 1;
+        // front = frontSentinel;
+        // back = backSentinel;
         return removed.value;
     }
 
@@ -63,8 +67,11 @@ public class LinkedDeque<T> extends AbstractDeque<T> {
         if ((index >= size) || (index < 0)) {
             return null;
         }
-        // TODO: replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet.");
+        Node<T> select = frontSentinel.next;
+        for (int i = 0; i < index; i++) {
+            select = select.next;
+        }
+        return select.value;
     }
 
     public int size() {

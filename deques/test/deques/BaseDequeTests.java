@@ -196,7 +196,7 @@ public abstract class BaseDequeTests extends BaseTest {
         deque.addFirst("a");
         deque.addLast("b");
         deque.removeFirst();
-        assertThat(deque).hasSize(0);
+        assertThat(deque).hasSize(1);
         //        String output = deque.removeLast();
         //        assertThat(output).isEqualTo(null);
         checkInvariants(deque);
