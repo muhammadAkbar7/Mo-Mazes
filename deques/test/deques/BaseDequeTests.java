@@ -191,6 +191,17 @@ public abstract class BaseDequeTests extends BaseTest {
     }
 
     @Test
+    void remove_afterRemove_lastx2_returnsCorrectItem() {
+        Deque<String> deque = createDeque();
+        deque.addLast("a");
+        deque.addLast("b");
+        deque.removeLast();
+        String output = deque.removeFirst();
+        assertThat(output).isEqualTo("a");
+        checkInvariants(deque);
+    }
+
+    @Test
     void remove_everything_after_add() {
         Deque<String> deque = createDeque();
         deque.addFirst("a");

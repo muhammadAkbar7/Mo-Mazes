@@ -9,33 +9,29 @@ public class LinkedDeque<T> extends AbstractDeque<T> {
     // We access these during grading to test your code.
     Node<T> front;
     Node<T> back;
-    private Node<T> frontSentinel;
-    private Node<T> backSentinel;
     // Feel free to add any additional fields you may need, though.
 
-    public LinkedDeque() { // make sent nodes
-        // frontSentinel = new Node<>(null, null, front);
-        // backSentinel = new Node<>(null, back, null);
-        frontSentinel = new Node<>(null, null, null);
-        backSentinel = new Node<>(null, null, null);
-        frontSentinel.next = backSentinel;
-        backSentinel.prev = frontSentinel;
-        front = frontSentinel;
-        back = backSentinel;
+    public LinkedDeque() {
+        this.front = new Node<>(null);
+        this.back = new Node<>(null);
+        front.next = back;
+        back.prev = front;
         size = 0;
     }
 
     public void addFirst(T item) { // must run in constant time (operations must not involve any looping or recursion). Note: size is provided for you
-        Node<T> addNode = new Node<>(item, frontSentinel, frontSentinel.next);
-        frontSentinel.next.prev = addNode;
-        frontSentinel.next = addNode;
+        Node<T> hold = front.next;
+        Node<T> addNode = new Node<>(item, front, front.next);
+        front.next = addNode;
+        hold.prev = addNode;
         size += 1;
     }
 
     public void addLast(T item) { // must run in constant time (operations must not involve any looping or recursion). Note: size is provided for you
-        Node<T> addNode = new Node<>(item, backSentinel.prev, backSentinel);
-        backSentinel.prev.next = addNode;
-        backSentinel.prev = addNode;
+        Node<T> hold = back.prev;
+        Node<T> addNode = new Node<>(item, back.prev, back);
+        back.prev = addNode;
+        hold.next = addNode;
         size += 1;
     }
 
@@ -43,9 +39,10 @@ public class LinkedDeque<T> extends AbstractDeque<T> {
         if (size == 0) {
             return null;
         }
-        Node<T> removed = frontSentinel.next;
-        frontSentinel.next = removed.next;
-        removed.next.prev = frontSentinel;
+        Node<T> removed = front.next;
+        Node<T> hold = front.next.next;
+        front.next = hold;
+        hold.prev = front;
         size -= 1;
         return removed.value;
     }
@@ -54,12 +51,11 @@ public class LinkedDeque<T> extends AbstractDeque<T> {
         if (size == 0) {
             return null;
         }
-        Node<T> removed = backSentinel.prev;
-        backSentinel.prev = removed.next;
-        removed.prev.next = backSentinel;
+        Node<T> removed = back.prev;
+        Node<T> hold = back.prev.prev;
+        back.prev = hold;
+        hold.next = back;
         size -= 1;
-        // front = frontSentinel;
-        // back = backSentinel;
         return removed.value;
     }
 
@@ -69,12 +65,12 @@ public class LinkedDeque<T> extends AbstractDeque<T> {
         }
         Node<T> select;
         if (Math.abs(index - size) <= index) {
-            select = backSentinel.prev;
+            select = back.prev;
             for (int i = size - 1; i > index; i--) {
                 select = select.prev;
             }
         } else {
-            select = frontSentinel.next;
+            select = front.next;
             for (int i = 0; i < index; i++) {
                 select = select.next;
             }
