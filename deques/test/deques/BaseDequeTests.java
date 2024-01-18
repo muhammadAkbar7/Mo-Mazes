@@ -180,6 +180,29 @@ public abstract class BaseDequeTests extends BaseTest {
     }
 
     @Test
+    void remove_afterRemove_last_returnsCorrectItem() {
+        Deque<String> deque = createDeque();
+        deque.addFirst("a");
+        deque.addLast("b");
+        deque.removeLast();
+        String output = deque.removeFirst();
+        assertThat(output).isEqualTo("a");
+        checkInvariants(deque);
+    }
+
+    @Test
+    void remove_everything_after_add() {
+        Deque<String> deque = createDeque();
+        deque.addFirst("a");
+        deque.addLast("b");
+        deque.removeFirst();
+        assertThat(deque).hasSize(0);
+        //        String output = deque.removeLast();
+        //        assertThat(output).isEqualTo(null);
+        checkInvariants(deque);
+    }
+
+    @Test
     void getEach_afterAddManyToSameSide_returnsCorrectItems() {
         Deque<Integer> deque = createDeque();
         IntStream.range(0, 20).forEach(deque::addLast);
