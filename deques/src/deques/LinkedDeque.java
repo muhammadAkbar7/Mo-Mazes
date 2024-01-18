@@ -21,13 +21,13 @@ public class LinkedDeque<T> extends AbstractDeque<T> {
         front = frontSentinel;
         back = backSentinel;
         size = 0;
-        // TODO: replace this with your code
     }
 
     public void addFirst(T item) { // must run in constant time (operations must not involve any looping or recursion). Note: size is provided for you
+        Node<T> addNode = new Node<>(item, frontSentinel, frontSentinel.next);
+        frontSentinel.next.prev = addNode;
+        frontSentinel.next = addNode;
         size += 1;
-        // TODO: replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet.");
     }
 
     public void addLast(T item) { // must run in constant time (operations must not involve any looping or recursion). Note: size is provided for you
@@ -40,9 +40,11 @@ public class LinkedDeque<T> extends AbstractDeque<T> {
         if (size == 0) {
             return null;
         }
+        Node<T> removed = frontSentinel.next;
+        frontSentinel.next = removed.next;
+        removed.next.prev = frontSentinel;
         size -= 1;
-        // TODO: replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet.");
+        return removed.value;
     }
 
     public T removeLast() { // must run in constant time (operations must not involve any looping or recursion). Note: size is provided for you

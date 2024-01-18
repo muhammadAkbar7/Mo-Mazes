@@ -149,6 +149,26 @@ public abstract class BaseDequeTests extends BaseTest {
     }
 
     @Test
+    void size_afterRemove() {
+        Deque<String> deque = createDeque();
+        deque.addFirst("a");
+        //deque.addLast("b");
+        deque.removeFirst();
+        assertThat(deque).hasSize(0);
+        checkInvariants(deque);
+    }
+
+    @Test
+    void size_afterRemove_only_one() {
+        Deque<String> deque = createDeque();
+        deque.addFirst("a");
+        deque.addFirst("b");
+        deque.removeFirst();
+        assertThat(deque).hasSize(1);
+        checkInvariants(deque);
+    }
+
+    @Test
     void remove_afterRemove_afterAddToOppositeEnds_returnsCorrectItem() {
         Deque<String> deque = createDeque();
         deque.addFirst("a");
