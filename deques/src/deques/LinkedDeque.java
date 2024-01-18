@@ -67,9 +67,18 @@ public class LinkedDeque<T> extends AbstractDeque<T> {
         if ((index >= size) || (index < 0)) {
             return null;
         }
-        Node<T> select = frontSentinel.next;
-        for (int i = 0; i < index; i++) {
-            select = select.next;
+        //int num;
+        Node<T> select;
+        if (Math.abs(index - size) <= index) {
+            select = backSentinel.prev;
+            for (int i = size - 1; i > index; i--) {
+                select = select.prev;
+            }
+        } else {
+            select = frontSentinel.next;
+            for (int i = 0; i < index; i++) {
+                select = select.next;
+            }
         }
         return select.value;
     }

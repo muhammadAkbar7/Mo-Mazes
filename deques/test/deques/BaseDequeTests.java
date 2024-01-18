@@ -211,6 +211,39 @@ public abstract class BaseDequeTests extends BaseTest {
         checkInvariants(deque);
     }
 
+    @Test
+    void get_10() {
+        Deque<Integer> deque = createDeque();
+        IntStream.range(0, 20).forEach(deque::addLast);
+        // this assertion calls `get` for each index
+        assertThat(deque).containsExactly(IntStream.range(0, 10).boxed().toArray(Integer[]::new));
+        checkInvariants(deque);
+    }
+
+    @Test
+    void get_1() {
+        Deque<Integer> deque = createDeque();
+        IntStream.range(0, 20).forEach(deque::addLast);
+        // this assertion calls `get` for each index
+        assertThat(deque).containsExactly(IntStream.range(0, 1).boxed().toArray(Integer[]::new));
+        checkInvariants(deque);
+    }
+
+    @Test
+    void simple_get_1() {
+        Deque<Integer> deque = createDeque();
+        IntStream.range(0, 20).forEach(deque::addLast);
+        for (int i = 0; i < 10; i++) {
+            System.out.println(deque.get(i));
+        }
+        int actual = deque.get(9);
+        assertThat(actual).isEqualTo(9);
+
+        // this assertion calls `get` for each index
+        //assertThat(deque).containsExactly(IntStream.range(0, 1).boxed().toArray(Integer[]::new));
+        checkInvariants(deque);
+    }
+
     /* These tests check whether you can create Deques of different parameterized types. */
     @Test
     void remove_afterAddString_returnsCorrectString() {
