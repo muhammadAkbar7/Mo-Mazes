@@ -108,12 +108,16 @@ public class ArrayMap<K, V> extends AbstractIterableMap<K, V> {
     @Override
     public V remove(Object key) { // return mapping for key if it present
         V removeValue = null; // returns remove value
-        for (int i = 0; i < sizeMap; i++) { // make sure to check for last entry, could be < or equal to
-            if (entries[i] != null && entries[i].getKey().equals(key)) { // same key or null, f you need to check object equality but can’t guarantee that either object is non-null, use Objects.equals(a, b) under java.util—it does all the necessary null checks for you.\
-                removeValue = entries[i].getValue();
-                entries[i] = entries[sizeMap - 1];
-                entries[sizeMap - 1] = null;
-                sizeMap--;
+        if (sizeMap == 1) {
+            entries[0] = null;
+        } else if (sizeMap != 0) {
+            for (int i = 0; i < sizeMap; i++) { // make sure to check for last entry, could be < or equal to
+                if (entries[i] != null && entries[i].getKey().equals(key)) { // same key or null, f you need to check object equality but can’t guarantee that either object is non-null, use Objects.equals(a, b) under java.util—it does all the necessary null checks for you.\
+                    removeValue = entries[i].getValue();
+                    entries[i] = entries[sizeMap - 1];
+                    entries[sizeMap - 1] = null;
+                    sizeMap--;
+                }
             }
         }
         return removeValue;
@@ -159,17 +163,23 @@ public class ArrayMap<K, V> extends AbstractIterableMap<K, V> {
     private static class ArrayMapIterator<K, V> implements Iterator<Map.Entry<K, V>> {
         private final SimpleEntry<K, V>[] entries;
         // You may add more fields and constructor parameters
-        private int index = -1;
+        private int index;
         private int sizeMap2;
 
         public ArrayMapIterator(SimpleEntry<K, V>[] entries, int sizeMap) {
             this.entries = entries;
             this.sizeMap2 = sizeMap;
+            this.index = -1;
         }
 
         @Override
         public boolean hasNext() {
             // if (index >= sizeMap2) {
+            //     return false;
+            // } else {
+            //     return true;
+            // }
+            // if (entries[index + 1] != null) {
             //     return false;
             // } else {
             //     return true;
@@ -182,9 +192,10 @@ public class ArrayMap<K, V> extends AbstractIterableMap<K, V> {
         @Override
         public Map.Entry<K, V> next() {
             index++;
-            if (index >= sizeMap2) {
+            if (index >= sizeMap2) { //index >= sizeMap2
                 throw new NoSuchElementException();
             }
+            //index++;
             return entries[index];
             // TODO: replace this with your code
             //throw new UnsupportedOperationException("Not implemented yet.");
