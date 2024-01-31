@@ -9,9 +9,10 @@ import java.util.Map;
  */
 public class ChainedHashMap<K, V> extends AbstractIterableMap<K, V> {
     // TODO: define reasonable default values for each of the following three fields
-    private static final double DEFAULT_RESIZING_LOAD_FACTOR_THRESHOLD = 0;
-    private static final int DEFAULT_INITIAL_CHAIN_COUNT = 0;
-    private static final int DEFAULT_INITIAL_CHAIN_CAPACITY = 0;
+    private static final double DEFAULT_RESIZING_LOAD_FACTOR_THRESHOLD = 0; //1 this is a fraction
+    private static final int DEFAULT_INITIAL_CHAIN_COUNT = 0; // 100 index size
+    private static final int DEFAULT_INITIAL_CHAIN_CAPACITY = 0; // 100 arrayMap size
+    int threshold = 3 / 4;
 
     /*
     Warning:
@@ -40,8 +41,14 @@ public class ChainedHashMap<K, V> extends AbstractIterableMap<K, V> {
      *                             Must be > 0.
      */
     public ChainedHashMap(double resizingLoadFactorThreshold, int initialChainCount, int chainInitialCapacity) {
+        // this.DEFAULT_INITIAL_CHAIN_CAPACITY = 10;
+        // this.chainInitialCapacity = 10;
+        this.chains = createArrayOfChains(initialChainCount);
+        // this.resizingLoadFactorThreshold = 0;
+        // this.initialChainCount = 100;
+        // this.chainInitialCapacity = 100;
         // TODO: replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet.");
+        // throw new UnsupportedOperationException("Not implemented yet.");
     }
 
     /**
@@ -78,6 +85,8 @@ public class ChainedHashMap<K, V> extends AbstractIterableMap<K, V> {
 
     @Override
     public V put(K key, V value) {
+        // loading factor
+        //
         // TODO: replace this with your code
         throw new UnsupportedOperationException("Not implemented yet.");
     }

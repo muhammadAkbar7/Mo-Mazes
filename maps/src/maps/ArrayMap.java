@@ -186,6 +186,9 @@ public class ArrayMap<K, V> extends AbstractIterableMap<K, V> {
             // } else {
             //     return true;
             // }
+            if (index + 1 >= sizeMap2) { // doesn't access array
+                return false;
+            }
             return entries[index + 1] != null;
             //throw new UnsupportedOperationException("Not implemented yet.");
         }
