@@ -107,20 +107,21 @@ public class ArrayMap<K, V> extends AbstractIterableMap<K, V> {
 
     @Override
     public V remove(Object key) { // return mapping for key if it present
-        V removeValue = null; // returns remove value
-        if (sizeMap == 1) {
-            entries[0] = null;
-        } else if (sizeMap != 0) {
-            for (int i = 0; i < sizeMap; i++) { // make sure to check for last entry, could be < or equal to
-                if (entries[i] != null && entries[i].getKey().equals(key)) { // same key or null, f you need to check object equality but can’t guarantee that either object is non-null, use Objects.equals(a, b) under java.util—it does all the necessary null checks for you.\
-                    removeValue = entries[i].getValue();
-                    entries[i] = entries[sizeMap - 1];
-                    entries[sizeMap - 1] = null;
-                    sizeMap--;
-                }
+        // V removeValue = null; // returns remove value
+        // if (sizeMap == 1) {
+        //     entries[0] = null;
+        // } else if (sizeMap != 0) {
+        for (int i = 0; i < sizeMap; i++) { // make sure to check for last entry, could be < or equal to
+            if (entries[i] != null && entries[i].getKey().equals(key)) { // same key or null, f you need to check object equality but can’t guarantee that either object is non-null, use Objects.equals(a, b) under java.util—it does all the necessary null checks for you.\
+                V removeValue = entries[i].getValue();
+                entries[i] = entries[sizeMap - 1];
+                entries[sizeMap - 1] = null;
+                sizeMap--;
+                return removeValue; // stops once found
             }
         }
-        return removeValue;
+        //}
+        return null;
     }
 
     @Override

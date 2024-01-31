@@ -443,8 +443,11 @@ public abstract class BaseMapTests extends BaseTest {
         Map<Integer, Integer> map = createMap();
         Map<Integer, Integer> expected = new HashMap<>();
         for (int i = 0; i < size; i++) {
-            map.put(i, i*i);
-            expected.put(i, i*i);
+            if (i == 99) {
+                int hi = 0;
+            }
+            map.put(i, i * i);
+            expected.put(i, i * i);
         }
 
         assertThat(map)
