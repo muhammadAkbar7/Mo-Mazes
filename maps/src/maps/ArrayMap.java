@@ -72,7 +72,7 @@ public class ArrayMap<K, V> extends AbstractIterableMap<K, V> {
     public V get(Object key) {
         V value = null;
         for (int i = 0; i < sizeMap; i++) {
-            if (entries[i] != null && entries[i].getKey().equals(key)) { // same key or null, f you need to check object equality but can’t guarantee that either object is non-null, use Objects.equals(a, b) under java.util—it does all the necessary null checks for you.
+            if (entries[i] != null && entries[i].getKey().equals(key)) {
                 value = entries[i].getValue();
             }
         }
@@ -80,25 +80,25 @@ public class ArrayMap<K, V> extends AbstractIterableMap<K, V> {
     }
 
     @Override
-    public V put(K key, V value) { // resize
+    public V put(K key, V value) {
         V oldValue = null;
         boolean update = true;
         SimpleEntry<K, V> newValue = new SimpleEntry<K, V>(key, value);
-        if (sizeMap >= entries.length) { // check size, If the array is full and a new key is inserted, create a new array and copy over the old elements.
-            SimpleEntry<K, V>[] copy = createArrayOfEntries(sizeMap * 2); // double this
+        if (sizeMap >= entries.length) {
+            SimpleEntry<K, V>[] copy = createArrayOfEntries(sizeMap * 2);
             for (int i = 0; i < sizeMap; i++) {
                 copy[i] = entries[i];
             }
             entries = copy;
         }
-        for (int i = 0; i < sizeMap; i++) { // i = 0, 1
-            if (entries[i] != null && entries[i].getKey().equals(key)) { // same key or null, f you need to check object equality but can’t guarantee that either object is non-null, use Objects.equals(a, b) under java.util—it does all the necessary null checks for you.
+        for (int i = 0; i < sizeMap; i++) {
+            if (entries[i] != null && entries[i].getKey().equals(key)) {
                 oldValue = entries[i].getValue();
                 entries[i].setValue(value);
                 update = false;
             }
         }
-        if (update == true) {
+        if (update) {
             entries[sizeMap] = newValue;
             sizeMap++;
         }
@@ -112,7 +112,7 @@ public class ArrayMap<K, V> extends AbstractIterableMap<K, V> {
         //     entries[0] = null;
         // } else if (sizeMap != 0) {
         for (int i = 0; i < sizeMap; i++) { // make sure to check for last entry, could be < or equal to
-            if (entries[i] != null && entries[i].getKey().equals(key)) { // same key or null, f you need to check object equality but can’t guarantee that either object is non-null, use Objects.equals(a, b) under java.util—it does all the necessary null checks for you.\
+            if (entries[i] != null && entries[i].getKey().equals(key)) {
                 V removeValue = entries[i].getValue();
                 entries[i] = entries[sizeMap - 1];
                 entries[sizeMap - 1] = null;
@@ -129,13 +129,14 @@ public class ArrayMap<K, V> extends AbstractIterableMap<K, V> {
         for (int i = 0; i <= sizeMap; i++) {
             entries[i] = null;
         }
+        sizeMap = 0;
     }
 
     @Override
     public boolean containsKey(Object key) {
         boolean found = false;
         for (int i = 0; i < sizeMap; i++) { // i = 0, 1
-            if (entries[i] != null && entries[i].getKey().equals(key)) { // same key or null, f you need to check object equality but can’t guarantee that either object is non-null, use Objects.equals(a, b) under java.util—it does all the necessary null checks for you.
+            if (entries[i] != null && entries[i].getKey().equals(key)) {
                 found = true;
             }
         }
@@ -186,7 +187,6 @@ public class ArrayMap<K, V> extends AbstractIterableMap<K, V> {
             //     return true;
             // }
             return entries[index + 1] != null;
-            // TODO: replace this with your code
             //throw new UnsupportedOperationException("Not implemented yet.");
         }
 

@@ -456,13 +456,29 @@ public abstract class BaseMapTests extends BaseTest {
     }
 
     @Test
+    void clear_size5() {
+        final int size = 5;
+        Map<Integer, Integer> map = createMap();
+        Map<Integer, Integer> expected = new HashMap<>();
+        for (int i = 0; i < size; i++) {
+            map.put(i, i * i);
+            expected.put(i, i * i);
+        }
+        map.clear();
+
+        assertThat(map)
+            .as("entries yielded by iterator")
+            .containsExactlyInAnyOrderEntriesOf(expected);
+    }
+
+    @Test
     void iterator_yieldsCorrectEntries_afterUsingAnotherIterator() {
         final int size = 100;
         Map<Integer, Integer> map = createMap();
         Map<Integer, Integer> expected = new HashMap<>();
         for (int i = 0; i < size; i++) {
-            map.put(i, i*i);
-            expected.put(i, i*i);
+            map.put(i, i * i);
+            expected.put(i, i * i);
         }
         exhaust(map.keySet().iterator());
 
