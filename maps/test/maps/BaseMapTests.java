@@ -225,6 +225,7 @@ public abstract class BaseMapTests extends BaseTest {
         assertThat(output).as("return value").isNull();
     }
 
+
     @Test
     void put_removedKey_returnsNull() {
         Map<String, String> map = createMapAfterPutAndRemoveDuplicateKey();

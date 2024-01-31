@@ -2,20 +2,23 @@ package maps;
 
 import java.util.Iterator;
 import java.util.Map;
+import java.util.NoSuchElementException;
+//import java.util.*;
 
 /**
  * @see AbstractIterableMap
  * @see Map
  */
 public class ArrayMap<K, V> extends AbstractIterableMap<K, V> {
-    // TODO: define a reasonable default value for the following field
-    private static final int DEFAULT_INITIAL_CAPACITY = 0;
+
+    private static final int DEFAULT_INITIAL_CAPACITY = 100;
     /*
     Warning:
     You may not rename this field or change its type.
     We will be inspecting it in our secret tests.
      */
     SimpleEntry<K, V>[] entries;
+    int sizeMap;
 
     // You may add extra fields or helper methods though!
 
@@ -33,9 +36,13 @@ public class ArrayMap<K, V> extends AbstractIterableMap<K, V> {
      * @param initialCapacity the initial capacity of the ArrayMap. Must be > 0.
      */
     public ArrayMap(int initialCapacity) {
+        //SimpleEntry<K, V>[] entry;
         this.entries = this.createArrayOfEntries(initialCapacity);
-        // TODO: replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet.");
+        this.sizeMap = 0;
+        // for (SimpleEntry<K, V> oneEntry : entries) {
+        //     System.out.println(oneEntry);
+        // }
+        //this.entries = entries;
     }
 
     /**
@@ -63,45 +70,83 @@ public class ArrayMap<K, V> extends AbstractIterableMap<K, V> {
 
     @Override
     public V get(Object key) {
-        // TODO: replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet.");
+        V value = null;
+        for (int i = 0; i < sizeMap; i++) {
+            if (entries[i] != null && entries[i].getKey().equals(key)) { // same key or null, f you need to check object equality but can’t guarantee that either object is non-null, use Objects.equals(a, b) under java.util—it does all the necessary null checks for you.
+                value = entries[i].getValue();
+            }
+        }
+        return value;
     }
 
     @Override
-    public V put(K key, V value) {
-        // TODO: replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet.");
+    public V put(K key, V value) { // resize
+        V oldValue = null;
+        boolean update = true;
+        SimpleEntry<K, V> newValue = new SimpleEntry<K, V>(key, value);
+        if (sizeMap >= entries.length) { // check size, If the array is full and a new key is inserted, create a new array and copy over the old elements.
+            SimpleEntry<K, V>[] copy = createArrayOfEntries(sizeMap * 2); // double this
+            for (int i = 0; i < sizeMap; i++) {
+                copy[i] = entries[i];
+            }
+            entries = copy;
+        }
+        for (int i = 0; i < sizeMap; i++) { // i = 0, 1
+            if (entries[i] != null && entries[i].getKey().equals(key)) { // same key or null, f you need to check object equality but can’t guarantee that either object is non-null, use Objects.equals(a, b) under java.util—it does all the necessary null checks for you.
+                oldValue = entries[i].getValue();
+                entries[i].setValue(value);
+                update = false;
+            }
+        }
+        if (update == true) {
+            entries[sizeMap] = newValue;
+            sizeMap++;
+        }
+        return oldValue;
     }
 
     @Override
-    public V remove(Object key) {
-        // TODO: replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet.");
+    public V remove(Object key) { // return mapping for key if it present
+        V removeValue = null; // returns remove value
+        for (int i = 0; i < sizeMap; i++) { // make sure to check for last entry, could be < or equal to
+            if (entries[i] != null && entries[i].getKey().equals(key)) { // same key or null, f you need to check object equality but can’t guarantee that either object is non-null, use Objects.equals(a, b) under java.util—it does all the necessary null checks for you.\
+                removeValue = entries[i].getValue();
+                entries[i] = entries[sizeMap - 1];
+                entries[sizeMap - 1] = null;
+                sizeMap--;
+            }
+        }
+        return removeValue;
     }
 
     @Override
     public void clear() {
-        // TODO: replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet.");
+        for (int i = 0; i <= sizeMap; i++) {
+            entries[i] = null;
+        }
     }
 
     @Override
     public boolean containsKey(Object key) {
-        // TODO: replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet.");
+        boolean found = false;
+        for (int i = 0; i < sizeMap; i++) { // i = 0, 1
+            if (entries[i] != null && entries[i].getKey().equals(key)) { // same key or null, f you need to check object equality but can’t guarantee that either object is non-null, use Objects.equals(a, b) under java.util—it does all the necessary null checks for you.
+                found = true;
+            }
+        }
+        return found;
     }
 
     @Override
     public int size() {
-        // TODO: replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet.");
+        return sizeMap;
     }
 
     @Override
     public Iterator<Map.Entry<K, V>> iterator() {
         // Note: You may or may not need to change this method, depending on whether you
         // add any parameters to the ArrayMapIterator constructor.
-        return new ArrayMapIterator<>(this.entries);
+        return new ArrayMapIterator<>(this.entries, sizeMap);
     }
 
     // TODO: after you implement the iterator, remove this toString implementation
@@ -114,21 +159,35 @@ public class ArrayMap<K, V> extends AbstractIterableMap<K, V> {
     private static class ArrayMapIterator<K, V> implements Iterator<Map.Entry<K, V>> {
         private final SimpleEntry<K, V>[] entries;
         // You may add more fields and constructor parameters
+        private int index = -1;
+        private int sizeMap2;
 
-        public ArrayMapIterator(SimpleEntry<K, V>[] entries) {
+        public ArrayMapIterator(SimpleEntry<K, V>[] entries, int sizeMap) {
             this.entries = entries;
+            this.sizeMap2 = sizeMap;
         }
 
         @Override
         public boolean hasNext() {
+            // if (index >= sizeMap2) {
+            //     return false;
+            // } else {
+            //     return true;
+            // }
+            return entries[index + 1] != null;
             // TODO: replace this with your code
-            throw new UnsupportedOperationException("Not implemented yet.");
+            //throw new UnsupportedOperationException("Not implemented yet.");
         }
 
         @Override
         public Map.Entry<K, V> next() {
+            index++;
+            if (index >= sizeMap2) {
+                throw new NoSuchElementException();
+            }
+            return entries[index];
             // TODO: replace this with your code
-            throw new UnsupportedOperationException("Not implemented yet.");
+            //throw new UnsupportedOperationException("Not implemented yet.");
         }
     }
 }

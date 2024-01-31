@@ -16,6 +16,14 @@ public class ArrayMapTests extends BaseMapTests {
     }
 
     @Test
+    void get_removed() {
+        int capacity = 373;
+        Map<Integer, Integer> map = createMap(capacity);
+        map.put(1, 1);
+        map.remove(1, 1);
+    }
+
+    @Test
     void iterator_hasNext_afterExhausted_whenArrayIsFull_returnsFalse() {
         int capacity = 373;
         Map<Integer, Integer> map = createMap(capacity);
