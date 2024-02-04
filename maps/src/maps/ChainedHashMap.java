@@ -17,6 +17,7 @@ public class ChainedHashMap<K, V> extends AbstractIterableMap<K, V> {
     int initialChainCapacity;
     double elements; // might change to hashet element
     AbstractIterableMap<K, V> holder; // store key - value pairings for rehash
+    boolean input; // input = checks whether I should add new stuff to holder
 
 
     /*
@@ -88,8 +89,10 @@ public class ChainedHashMap<K, V> extends AbstractIterableMap<K, V> {
 
     @Override
     public V put(K key, V value) {
+        input = true;
         // check loading factor = check, if greater = resize (must double chains) and rehash everything
         if ((elements / chains.length) >= DEFAULT_RESIZING_LOAD_FACTOR_THRESHOLD) {
+            input = false; // no need to put any new things in holder arraymap
             // make a copy of all elements in array map
             // resize (need to check and see if I need to resize when it is less than load factor and not enough space)
             AbstractIterableMap<K, V>[] fresh = createArrayOfChains(chains.length * 2);
@@ -101,6 +104,7 @@ public class ChainedHashMap<K, V> extends AbstractIterableMap<K, V> {
                 V valueH = iteratorH.next().getValue();
                 reload = putter(keyH, valueH);
             }
+            holder.clear(); // clears the array after I put everything in
             return reload; // i want it to keep iterating and adding from holder to new hash-chained map
         }
         return putter(key, value);
@@ -114,7 +118,7 @@ public class ChainedHashMap<K, V> extends AbstractIterableMap<K, V> {
         } else {
             hashCode = key.hashCode();
         }
-        int index = hashCode % chains.length; // creates index
+        int index = Math.abs(hashCode) % chains.length; // creates index
         if (chains[index] != null) { // there is already an array map (chain) in that index
             AbstractIterableMap<K, V> arrFound = chains[index]; // sets array map to something i can work with
             Iterator<Entry<K, V>> iterator = arrFound.iterator(); // iterator maker
@@ -122,13 +126,17 @@ public class ChainedHashMap<K, V> extends AbstractIterableMap<K, V> {
                 oldValue = iterator.next().getValue();
             }
             chains[index].put(key, value); // puts another value in the chain
-            holder.put(key, value); // add key-value pair to holder array
+            if (input == true) {
+                holder.put(key, value); // add key-value pair to holder array
+            }
             elements++; // increment key-value pairings
             return oldValue; // may or may not use this
         } else { // no array map index, create one
             AbstractIterableMap<K, V> arr = createChain(DEFAULT_INITIAL_CHAIN_CAPACITY);
             arr.put(key, value); // puts in the key and value in it array
-            holder.put(key, value);
+            if (input == true) {
+                holder.put(key, value); // add key-value pair to holder array
+            }
             chains[index] = arr; // sets chain[index] = new chain
             elements++;
         }
@@ -143,8 +151,10 @@ public class ChainedHashMap<K, V> extends AbstractIterableMap<K, V> {
 
     @Override
     public void clear() {
+        for (int i = 0; i < chains.length; i++) {
+            chains[i] = null;
+        }
         // ODO: replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet.");
     }
 
     @Override
@@ -155,8 +165,7 @@ public class ChainedHashMap<K, V> extends AbstractIterableMap<K, V> {
 
     @Override
     public int size() {
-        // ODO: replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet.");
+        return chains.length;
     }
 
     @Override
