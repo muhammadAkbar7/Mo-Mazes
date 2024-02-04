@@ -126,7 +126,7 @@ public class ChainedHashMap<K, V> extends AbstractIterableMap<K, V> {
                 oldValue = iterator.next().getValue();
             }
             chains[index].put(key, value); // puts another value in the chain
-            if (input == true) {
+            if (input) {
                 holder.put(key, value); // add key-value pair to holder array
             }
             elements++; // increment key-value pairings
@@ -134,7 +134,7 @@ public class ChainedHashMap<K, V> extends AbstractIterableMap<K, V> {
         } else { // no array map index, create one
             AbstractIterableMap<K, V> arr = createChain(DEFAULT_INITIAL_CHAIN_CAPACITY);
             arr.put(key, value); // puts in the key and value in it array
-            if (input == true) {
+            if (input) {
                 holder.put(key, value); // add key-value pair to holder array
             }
             chains[index] = arr; // sets chain[index] = new chain
