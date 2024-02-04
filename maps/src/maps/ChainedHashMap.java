@@ -231,21 +231,49 @@ public class ChainedHashMap<K, V> extends AbstractIterableMap<K, V> {
     private static class ChainedHashMapIterator<K, V> implements Iterator<Map.Entry<K, V>> {
         private AbstractIterableMap<K, V>[] chains;
         // You may add more fields and constructor parameters
+        private int index; // tracks the chain count array
+        private boolean inChain;
+        private int upperLimit;
 
         public ChainedHashMapIterator(AbstractIterableMap<K, V>[] chains) {
             this.chains = chains;
+            this.index = -1;
+            this.inChain = false;
+            this.upperLimit = 1;
         }
 
         @Override
         public boolean hasNext() {
-            // ODO: replace this with your code
-            throw new UnsupportedOperationException("Not implemented yet.");
+            if (index + 1 >= chains.length) {
+                return false;
+            }
+            // need one to go in chaining
+            return false;
         }
+
+        // go through the chain
+
 
         @Override
         public Map.Entry<K, V> next() {
-            // ODO: replace this with your code
-            throw new UnsupportedOperationException("Not implemented yet.");
+            if (!inChain) {
+                index++;
+            }
+            if (chains[index] != null) {
+                AbstractIterableMap<K, V> arrContains = chains[index]; // need to count size
+                Iterator<Entry<K, V>> iterator = arrContains.iterator();
+                int size = arrContains.size();
+                int indexInChain;
+                for (indexInChain = 0; indexInChain < size; indexInChain++) { // goes through the arraymap chain
+                    if (indexInChain + 1 == upperLimit) { // takes each value
+                        upperLimit++;
+                        return iterator.next();
+                    } else {
+                        iterator.next();
+                    }
+                }
+            }
+            return null;
         }
     }
 }
