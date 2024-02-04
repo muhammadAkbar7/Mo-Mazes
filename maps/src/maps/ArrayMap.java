@@ -36,13 +36,8 @@ public class ArrayMap<K, V> extends AbstractIterableMap<K, V> {
      * @param initialCapacity the initial capacity of the ArrayMap. Must be > 0.
      */
     public ArrayMap(int initialCapacity) {
-        //SimpleEntry<K, V>[] entry;
         this.entries = this.createArrayOfEntries(initialCapacity);
         this.sizeMap = 0;
-        // for (SimpleEntry<K, V> oneEntry : entries) {
-        //     System.out.println(oneEntry);
-        // }
-        //this.entries = entries;
     }
 
     /**
@@ -107,17 +102,13 @@ public class ArrayMap<K, V> extends AbstractIterableMap<K, V> {
 
     @Override
     public V remove(Object key) { // return mapping for key if it present
-        // V removeValue = null; // returns remove value
-        // if (sizeMap == 1) {
-        //     entries[0] = null;
-        // } else if (sizeMap != 0) {
         for (int i = 0; i < sizeMap; i++) { // make sure to check for last entry, could be < or equal to
             if (entries[i] != null && entries[i].getKey().equals(key)) {
                 V removeValue = entries[i].getValue();
                 entries[i] = entries[sizeMap - 1];
                 entries[sizeMap - 1] = null;
                 sizeMap--;
-                return removeValue; // stops once found
+                return removeValue;
             }
         }
         //}
@@ -155,7 +146,7 @@ public class ArrayMap<K, V> extends AbstractIterableMap<K, V> {
         return new ArrayMapIterator<>(this.entries, sizeMap);
     }
 
-    // TODO: after you implement the iterator, remove this toString implementation
+    // after you implement the iterator, remove this toString implementation
     // Doing so will give you a better string representation for assertion errors the debugger.
     @Override
     public String toString() {
@@ -176,21 +167,10 @@ public class ArrayMap<K, V> extends AbstractIterableMap<K, V> {
 
         @Override
         public boolean hasNext() {
-            // if (index >= sizeMap2) {
-            //     return false;
-            // } else {
-            //     return true;
-            // }
-            // if (entries[index + 1] != null) {
-            //     return false;
-            // } else {
-            //     return true;
-            // }
             if (index + 1 >= sizeMap2) { // doesn't access array
                 return false;
             }
             return entries[index + 1] != null;
-            //throw new UnsupportedOperationException("Not implemented yet.");
         }
 
         @Override
@@ -199,10 +179,7 @@ public class ArrayMap<K, V> extends AbstractIterableMap<K, V> {
             if (index >= sizeMap2) { //index >= sizeMap2
                 throw new NoSuchElementException();
             }
-            //index++;
             return entries[index];
-            // TODO: replace this with your code
-            //throw new UnsupportedOperationException("Not implemented yet.");
         }
     }
 }
