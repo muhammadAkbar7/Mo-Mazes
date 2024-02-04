@@ -159,8 +159,23 @@ public class ChainedHashMap<K, V> extends AbstractIterableMap<K, V> {
 
     @Override
     public boolean containsKey(Object key) {
+        boolean found = false;
+        for (int i = 0; i < chains.length; i++) {
+            if (chains[i] != null) {
+                AbstractIterableMap<K, V> arrContains = chains[i]; // sets array map to something i can work with
+                Iterator<Entry<K, V>> iterator = arrContains.iterator(); // iterator maker
+                K keyCheck;
+                while (iterator.hasNext()) { // checks through chain
+                    keyCheck = iterator.next().getKey();
+                    if (keyCheck.equals(key)) {
+                        found = true;
+                    }
+                }
+            }
+        }
+        return found;
+        // go through the chains; if the index is available go into that index and iterate through the chain
         // ODO: replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet.");
     }
 
     @Override
