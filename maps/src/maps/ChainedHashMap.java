@@ -160,7 +160,22 @@ public class ChainedHashMap<K, V> extends AbstractIterableMap<K, V> {
     @Override
     public V remove(Object key) {
         // ODO: replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet.");
+        V value = null;
+        for (int i = 0; i < chains.length; i++) {
+            if (chains[i] != null) {
+                AbstractIterableMap<K, V> arrContains = chains[i]; // sets array map to something i can work with
+                Iterator<Entry<K, V>> iterator = arrContains.iterator(); // iterator maker
+                K keyCheck;
+                while (iterator.hasNext()) { // checks through chain
+                    keyCheck = iterator.next().getKey();
+                    if (keyCheck.equals(key)) {
+                        value = arrContains.get(keyCheck); //might need to check if this works
+                        arrContains.remove(keyCheck);
+                    }
+                }
+            }
+        }
+        return value;
     }
 
     @Override
