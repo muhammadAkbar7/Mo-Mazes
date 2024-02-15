@@ -37,16 +37,23 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
         items.add(size, addNode); // adds node to open space
         size++;
         int curr = size - 1;
+        swapUp(curr);
+        // while ((curr > 0) && (items.get(curr).getPriority() < items.get(parent).getPriority())) {
+        //     swap(parent, curr);
+        //     curr = parent; // sets cur to parent position
+        //     parent = (curr - 1) / 2;
+        // }
+    }
+
+    public void swapUp(int curr) {
         int parent = (curr - 1) / 2;
         while ((curr > 0) && (items.get(curr).getPriority() < items.get(parent).getPriority())) {
-            // PriorityNode<T> parentNode = items.get(parent);
-            // items.set(parent, addNode); // swap
-            // items.set(curr, parentNode);
             swap(parent, curr);
             curr = parent; // sets cur to parent position
             parent = (curr - 1) / 2;
         }
     }
+
 
     // Here's a method stub that may be useful. Feel free to change or remove it, if you wish.
     // You'll probably want to add more helper methods like this one to make your code easier to read.
@@ -141,8 +148,13 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
      */
     @Override
     public void changePriority(T item, double priority) {
-        // ODO: replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet.");
+        if (!container.containsKey(item)) {
+            throw new NoSuchElementException();
+        }
+        int index = container.get(item);
+        swapDown(index);
+        swapUp(index);
+        items.get(index).setPriority(priority);
     }
 
     @Override
