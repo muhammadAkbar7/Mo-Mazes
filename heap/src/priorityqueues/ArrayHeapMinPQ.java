@@ -152,8 +152,8 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
             throw new NoSuchElementException();
         }
         int index = container.get(item);
-        swapDown(index);
         swapUp(index);
+        swapDown(index);
         items.get(index).setPriority(priority);
     }
 
