@@ -13,8 +13,8 @@ import java.util.List;
 public class UnionBySizeCompressingDisjointSets<T> implements DisjointSets<T> {
     // Do NOT rename or delete this field. We will be inspecting it directly in our private tests.
     List<Integer> pointers;
-    private final Map<T, Integer> ids; // change to a hashamp?
-    private final Map<Integer, Integer> sizes;
+    private final HashMap<T, Integer> ids; // change to a hashamp?
+    private final HashMap<Integer, Integer> sizes;
 
     /*
     However, feel free to add more fields and private helper methods. You will probably need to
@@ -22,23 +22,19 @@ public class UnionBySizeCompressingDisjointSets<T> implements DisjointSets<T> {
     */
 
     public UnionBySizeCompressingDisjointSets() {
-        ids = new HashMap<>();
-        sizes = new HashMap<>();
-        pointers = new ArrayList<>();
-        // ODO: replace this with your code
-        //throw new UnsupportedOperationException("Not implemented yet.");
+        this.ids = new HashMap<>();
+        this.sizes = new HashMap<>();
+        this.pointers = new ArrayList<>();
     }
 
     @Override
     public void makeSet(T item) {
-        // ODO: replace this with your code
         if (!ids.containsKey(item)) {
             int newIndex = pointers.size();
             pointers.add(newIndex);
             ids.put(item, newIndex);
             sizes.put(newIndex, 1);
         }
-        //throw new UnsupportedOperationException("Not implemented yet.");
     }
 
     @Override
@@ -51,8 +47,6 @@ public class UnionBySizeCompressingDisjointSets<T> implements DisjointSets<T> {
         // Perform path compression
         compressPath(index, root);
         return root;
-        // ODO: replace this with your code
-        //throw new UnsupportedOperationException("Not implemented yet.");
     }
 
     private int findRoot(int index) {
@@ -69,13 +63,6 @@ public class UnionBySizeCompressingDisjointSets<T> implements DisjointSets<T> {
             index = parent;
         }
     }
-
-    // private int findRoot(int index) {
-    //     if (pointers.get(index) != index) {
-    //         pointers.set(index, findRoot(pointers.get(index))); // Recursive call to find root
-    //     }
-    //     return pointers.get(index);
-    // }
 
     @Override
     public boolean union(T item1, T item2) {
@@ -94,9 +81,6 @@ public class UnionBySizeCompressingDisjointSets<T> implements DisjointSets<T> {
             pointers.set(root2, root1);
             sizes.put(root1, sizes.get(root1) + sizes.get(root2));
         }
-
         return true;
     }
-    // ODO: replace this with your code
-    // throw new UnsupportedOperationException("Not implemented yet.");
 }
