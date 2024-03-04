@@ -15,6 +15,7 @@ public class UnionBySizeCompressingDisjointSets<T> implements DisjointSets<T> {
     List<Integer> pointers;
     private final HashMap<T, Integer> ids; // change to a hashamp?
     private final HashMap<Integer, Integer> sizes;
+    private int size;
 
     /*
     However, feel free to add more fields and private helper methods. You will probably need to
@@ -25,6 +26,7 @@ public class UnionBySizeCompressingDisjointSets<T> implements DisjointSets<T> {
         this.ids = new HashMap<>();
         this.sizes = new HashMap<>();
         this.pointers = new ArrayList<>();
+        this.size = 0;
     }
 
     @Override
@@ -34,6 +36,7 @@ public class UnionBySizeCompressingDisjointSets<T> implements DisjointSets<T> {
             pointers.add(newIndex);
             ids.put(item, newIndex);
             sizes.put(newIndex, 1);
+            this.size++;
         }
     }
 
