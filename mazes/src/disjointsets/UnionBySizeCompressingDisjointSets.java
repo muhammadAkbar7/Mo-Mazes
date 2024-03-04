@@ -13,7 +13,7 @@ import java.util.List;
 public class UnionBySizeCompressingDisjointSets<T> implements DisjointSets<T> {
     // Do NOT rename or delete this field. We will be inspecting it directly in our private tests.
     List<Integer> pointers;
-    private final Map<T, Integer> ids;
+    private final Map<T, Integer> ids; // change to a hashamp?
     private final Map<Integer, Integer> sizes;
 
     /*
@@ -47,17 +47,35 @@ public class UnionBySizeCompressingDisjointSets<T> implements DisjointSets<T> {
         if (index == null) {
             throw new IllegalArgumentException(item + " is not in any set.");
         }
-        return findRoot(index);
+        int root = findRoot(index);
+        // Perform path compression
+        compressPath(index, root);
+        return root;
         // ODO: replace this with your code
         //throw new UnsupportedOperationException("Not implemented yet.");
     }
 
     private int findRoot(int index) {
         if (pointers.get(index) != index) {
-            pointers.set(index, findRoot(pointers.get(index))); // Path compression
+            pointers.set(index, findRoot(pointers.get(index))); // Recursive call to find root
         }
         return pointers.get(index);
     }
+
+    private void compressPath(int index, int root) {
+        while (index != root) {
+            int parent = pointers.get(index);
+            pointers.set(index, root);
+            index = parent;
+        }
+    }
+
+    // private int findRoot(int index) {
+    //     if (pointers.get(index) != index) {
+    //         pointers.set(index, findRoot(pointers.get(index))); // Recursive call to find root
+    //     }
+    //     return pointers.get(index);
+    // }
 
     @Override
     public boolean union(T item1, T item2) {
