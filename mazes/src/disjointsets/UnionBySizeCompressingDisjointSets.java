@@ -14,7 +14,7 @@ public class UnionBySizeCompressingDisjointSets<T> implements DisjointSets<T> {
     // Do NOT rename or delete this field. We will be inspecting it directly in our private tests.
     List<Integer> pointers;
     private final HashMap<T, Integer> ids; // change to a hashamp?
-    private final HashMap<Integer, Integer> sizes;
+    // private final HashMap<Integer, Integer> sizes;
     // private int size;
 
     /*
@@ -24,7 +24,7 @@ public class UnionBySizeCompressingDisjointSets<T> implements DisjointSets<T> {
 
     public UnionBySizeCompressingDisjointSets() {
         this.ids = new HashMap<>();
-        this.sizes = new HashMap<>();
+        // this.sizes = new HashMap<>();
         this.pointers = new ArrayList<>();
         // this.size = 0;
     }
@@ -32,24 +32,26 @@ public class UnionBySizeCompressingDisjointSets<T> implements DisjointSets<T> {
     @Override
     public void makeSet(T item) {
         if (!ids.containsKey(item)) {
-            int newIndex = pointers.size();
-            pointers.add(newIndex);
+            int newIndex = ids.size();
+            pointers.add(-1); // root , index = -1
             ids.put(item, newIndex);
-            sizes.put(newIndex, 1);
+            // sizes.put(newIndex, 1);
             // this.size++;
         }
     }
 
     @Override
     public int findSet(T item) {
+        if (this.ids.containsKey(item) == false) {
+            throw new IllegalArgumentException();
+        }
         Integer index = ids.get(item);
         if (index == null) {
             throw new IllegalArgumentException(item + " is not in any set.");
         }
-        int root = findRoot(index);
+        // int root = findRoot(index);
         // Perform path compression
-        compressPath(index, root);
-        return root;
+        return compressPath(index);
     }
 
     private int findRoot(int index) {
@@ -59,11 +61,12 @@ public class UnionBySizeCompressingDisjointSets<T> implements DisjointSets<T> {
         return pointers.get(index);
     }
 
-    private void compressPath(int index, int root) { // get to the very top, reset stuff,
+    private int compressPath(int index) { // get to the very top, reset stuff,
         int parent = index;
         while (this.pointers.get(parent) >= 0) { // might be a problem (while curr index >= 0 (non-negative)) while we're not at root
             //int parent = pointers.get(index); //
             parent = this.pointers.get(parent); // traversing path
+            System.out.println("whileLoop1");
             // pointers.set(index, root);
             // index = parent;
         }
@@ -73,8 +76,9 @@ public class UnionBySizeCompressingDisjointSets<T> implements DisjointSets<T> {
             parent = pointers.get(curr);
             pointers.set(curr, newRoot);
             curr = parent;
+            System.out.println("whileLoop2");
         }
-        // return newRoot;
+        return newRoot;
     }
 
     @Override
@@ -87,12 +91,16 @@ public class UnionBySizeCompressingDisjointSets<T> implements DisjointSets<T> {
         }
 
         // Union by size
-        if (sizes.get(root1) < sizes.get(root2)) {
+        int size1 = this.pointers.get(root1) * -1;
+        int size2 = this.pointers.get(root2) * -1;
+        if (size1 < size2) {
             pointers.set(root1, root2);
-            sizes.put(root2, sizes.get(root1) + sizes.get(root2));
+            this.pointers.set(root2, (size1 + size2) * -1);
+            // sizes.put(root2, sizes.get(root1) + sizes.get(root2));
         } else {
             pointers.set(root2, root1);
-            sizes.put(root1, sizes.get(root1) + sizes.get(root2));
+            this.pointers.set(root1, (size1 + size2) * -1);
+            // sizes.put(root1, sizes.get(root1) + sizes.get(root2));
         }
         return true;
     }
