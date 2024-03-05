@@ -1,6 +1,7 @@
 package disjointsets;
 
 import edu.washington.cse373.BaseTest;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import utils.IntWrapper;
 
@@ -25,6 +26,29 @@ public class UnionBySizeCompressingDisjointSetsTests extends BaseTest {
 
     protected <T> DisjointSetsAssert<T> assertThat(DisjointSets<T> actual) {
         return new DisjointSetsAssert<>(actual);
+    }
+
+    @Test
+    void findSet_causesPathCompression() {
+        DisjointSets<Integer> disjointSets = new UnionBySizeCompressingDisjointSets<>();
+
+        // Add elements and perform unions
+        for (int i = 0; i < 16; i++) {
+            disjointSets.makeSet(i);
+        }
+        disjointSets.union(0, 1);
+        disjointSets.union(2, 3);
+        disjointSets.union(4, 5);
+        disjointSets.union(6, 7);
+        disjointSets.union(8, 9);
+        disjointSets.union(10, 11);
+        disjointSets.union(12, 13);
+        disjointSets.union(14, 15);
+
+        // Test path compression
+        for (int i = 0; i < 16; i++) {
+            Assertions.assertEquals(1, disjointSets.findSet(i)); // All elements should point to 1
+        }
     }
 
     @Test
