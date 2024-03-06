@@ -6,6 +6,7 @@ import graphs.BaseEdge;
 import graphs.KruskalGraph;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 
@@ -42,6 +43,11 @@ public class KruskalMinimumSpanningTreeFinder<G extends KruskalGraph<V, E>, V, E
         DisjointSets<V> disjointSets = createDisjointSets();
         List<E> mstEdges = new ArrayList<>();
         double mstWeight = 0.0;
+        // loop through vertices and add
+        Collection<V> vertices = graph.allVertices();
+        for (V v : vertices) {
+            disjointSets.makeSet(v);
+        }
 
         for (E edge : edges) {
             V source = edge.from();
@@ -57,10 +63,13 @@ public class KruskalMinimumSpanningTreeFinder<G extends KruskalGraph<V, E>, V, E
             }
         }
 
-        if (mstEdges.size() == graph.allVertices().size() - 1) {
-            return new MinimumSpanningTree.Success<>(mstEdges);
-        } else {
+        if (mstEdges.size() < graph.allVertices().size() - 1) { // fillout minimu, kruskal carver first, goes through all edges
+            // until find min span tree (once all vertices have been connected)
+            // success = edges connects all nodes (no loops = acyclic)
+            // failure = goes through all edges and all nodes don't connect, not mst
             return new MinimumSpanningTree.Failure<>();
+        } else {
+            return new MinimumSpanningTree.Success<>(mstEdges);
         }
     }
 }
