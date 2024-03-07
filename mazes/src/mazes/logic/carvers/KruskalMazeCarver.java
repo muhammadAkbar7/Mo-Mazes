@@ -1,6 +1,5 @@
 package mazes.logic.carvers;
 
-import graphs.BaseEdge;
 import graphs.EdgeWithData;
 import graphs.minspantrees.MinimumSpanningTree;
 import graphs.minspantrees.MinimumSpanningTreeFinder;
@@ -10,10 +9,7 @@ import mazes.logic.MazeGraph;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
@@ -52,7 +48,8 @@ public class KruskalMazeCarver extends MazeCarver {
         MazeGraph mGraph = new MazeGraph(edges);
 
         Set<Wall> weightedWalls = new HashSet<Wall>();
-        MinimumSpanningTree<Room, EdgeWithData<Room, Wall>> minTree = minimumSpanningTreeFinder.findMinimumSpanningTree(mGraph);
+        MinimumSpanningTree<Room, EdgeWithData<Room, Wall>> minTree =
+            minimumSpanningTreeFinder.findMinimumSpanningTree(mGraph);
         for (EdgeWithData<Room, Wall> edge : minTree.edges()) {
             weightedWalls.add(edge.data());
         }

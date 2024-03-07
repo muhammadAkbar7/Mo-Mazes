@@ -1,7 +1,6 @@
 package graphs.minspantrees;
 
 import disjointsets.DisjointSets;
-import disjointsets.QuickFindDisjointSets;
 import disjointsets.UnionBySizeCompressingDisjointSets;
 import graphs.BaseEdge;
 import graphs.KruskalGraph;

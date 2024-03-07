@@ -41,19 +41,7 @@ public class DijkstraShortestPathFinder<G extends Graph<V, E>, V, E extends Base
         Map<V, E> edgeTo = new HashMap<>(); // Shortest Paths Tree
         Map<V, Double> distTo = new HashMap<>(); // Map to store distances from the start vertex to each vertex
         Set<V> known = new HashSet<>(); // Set to keep track of vertices whose shortest paths are already determined
-
-        // like min heap, distance as priority, find shortest path, update priority distance 1 and 2
-        // initilaize
         distTo.put(start, 0.0);
-        // Initialize distances to all vertices as positive infinity except for the start vertex
-        // for (V vertex : graph.vertices()) {
-        //     if (vertex.equals(start))
-        //         distTo.put(vertex, 0.0); // Distance from start to itself is 0
-        //     else
-        //         distTo.put(vertex, Double.POSITIVE_INFINITY); // Distance to other vertices is initially infinite
-        // }
-
-        // Insert start vertex with distance 0 into the priority queue
         minPQ.add(start, 0.0);
 
         while (!minPQ.isEmpty()) {
@@ -64,12 +52,6 @@ public class DijkstraShortestPathFinder<G extends Graph<V, E>, V, E extends Base
             }
             double uDist = distTo.get(u); // Distance to current vertex
             known.add(u);
-            //distTo.put(u, Double.POSITIVE_INFINITY);
-
-            // // Stop if the destination vertex is reached
-            // if (u.equals(end)) {
-            //     break;
-            // }
 
             // Update shortest paths to neighbors of the current vertex
             for (E edge : graph.outgoingEdgesFrom(u)) {
@@ -81,7 +63,7 @@ public class DijkstraShortestPathFinder<G extends Graph<V, E>, V, E extends Base
                 } else {
                     oldDist = Double.POSITIVE_INFINITY;
                 }
-                // double oldDist = distTo.get(v);
+
                 double newDist = distTo.get(u) + w; // Calculate new distance to the neighbor through the current vertex
 
                 if (newDist < oldDist) { // If new distance is less than the previously known distance
@@ -117,6 +99,7 @@ public class DijkstraShortestPathFinder<G extends Graph<V, E>, V, E extends Base
         // edge cases
         // start and end are the same
         // end is not in the spt at all
+        // zero edge path
 
         return new ShortestPath.Success<>(copy);
 
