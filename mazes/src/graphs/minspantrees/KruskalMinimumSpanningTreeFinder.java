@@ -2,6 +2,7 @@ package graphs.minspantrees;
 
 import disjointsets.DisjointSets;
 import disjointsets.QuickFindDisjointSets;
+import disjointsets.UnionBySizeCompressingDisjointSets;
 import graphs.BaseEdge;
 import graphs.KruskalGraph;
 
@@ -18,7 +19,8 @@ public class KruskalMinimumSpanningTreeFinder<G extends KruskalGraph<V, E>, V, E
     implements MinimumSpanningTreeFinder<G, V, E> {
 
     protected DisjointSets<V> createDisjointSets() {
-        return new QuickFindDisjointSets<>();
+        // return new QuickFindDisjointSets<>();
+        return new UnionBySizeCompressingDisjointSets<>();
         /*
         Disable the line above and enable the one below after you've finished implementing
         your `UnionBySizeCompressingDisjointSets`.
@@ -63,7 +65,7 @@ public class KruskalMinimumSpanningTreeFinder<G extends KruskalGraph<V, E>, V, E
             }
         }
 
-        if (mstEdges.size() < graph.allVertices().size() - 1) { // fillout minimu, kruskal carver first, goes through all edges
+        if (mstEdges.size() < graph.allVertices().size() - 1) {
             // until find min span tree (once all vertices have been connected)
             // success = edges connects all nodes (no loops = acyclic)
             // failure = goes through all edges and all nodes don't connect, not mst

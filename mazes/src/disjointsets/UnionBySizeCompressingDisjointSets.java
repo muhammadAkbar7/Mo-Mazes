@@ -2,7 +2,6 @@ package disjointsets;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.List;
 
 /**
@@ -24,9 +23,7 @@ public class UnionBySizeCompressingDisjointSets<T> implements DisjointSets<T> {
 
     public UnionBySizeCompressingDisjointSets() {
         this.ids = new HashMap<>();
-        // this.sizes = new HashMap<>();
         this.pointers = new ArrayList<>();
-        // this.size = 0;
     }
 
     @Override
@@ -42,7 +39,7 @@ public class UnionBySizeCompressingDisjointSets<T> implements DisjointSets<T> {
 
     @Override
     public int findSet(T item) {
-        if (this.ids.containsKey(item) == false) {
+        if (!this.ids.containsKey(item)) {
             throw new IllegalArgumentException();
         }
         Integer index = ids.get(item);
@@ -63,8 +60,8 @@ public class UnionBySizeCompressingDisjointSets<T> implements DisjointSets<T> {
 
     private int compressPath(int index) { // get to the very top, reset stuff,
         int parent = index;
-        while (this.pointers.get(parent) >= 0) { // might be a problem (while curr index >= 0 (non-negative)) while we're not at root
-            //int parent = pointers.get(index); //
+        while (this.pointers.get(parent) >= 0) {
+
             parent = this.pointers.get(parent); // traversing path
             System.out.println("whileLoop1");
             // pointers.set(index, root);
