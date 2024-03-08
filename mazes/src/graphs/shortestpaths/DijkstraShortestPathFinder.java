@@ -95,7 +95,7 @@ public class DijkstraShortestPathFinder<G extends Graph<V, E>, V, E extends Base
         V currVert = end;
         while (currVert != start) {
             E holder = spt.get(currVert); // add to list, use it to get precceding vertex
-            if (holder.equals(null)) {
+            if (holder == null) {
                 return new ShortestPath.Failure<>();
             }
             copy.add(holder);
