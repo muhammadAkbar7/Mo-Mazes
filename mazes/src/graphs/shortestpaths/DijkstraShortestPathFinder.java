@@ -87,10 +87,17 @@ public class DijkstraShortestPathFinder<G extends Graph<V, E>, V, E extends Base
     @Override
     // q: do we have call this in the above method, so once we have the end vertex we reach we can call shortest path
     protected ShortestPath<V, E> extractShortestPath(Map<V, E> spt, V start, V end) {
+        if (start.equals(end)) { // start and end are the same
+            return new ShortestPath.SingleVertex<>(start);
+        }
+
         List<E> copy = new ArrayList<E>(); // vertex end of the edge (to)
         V currVert = end;
         while (currVert != start) {
             E holder = spt.get(currVert); // add to list, use it to get precceding vertex
+            if (holder.equals(null)) {
+                return new ShortestPath.Failure<>();
+            }
             copy.add(holder);
             currVert = holder.from();
         }
