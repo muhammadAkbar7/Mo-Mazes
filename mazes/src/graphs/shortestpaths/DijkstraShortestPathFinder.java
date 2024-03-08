@@ -93,7 +93,7 @@ public class DijkstraShortestPathFinder<G extends Graph<V, E>, V, E extends Base
 
         List<E> copy = new ArrayList<E>(); // vertex end of the edge (to)
         V currVert = end;
-        while (currVert != start) {
+        while (!currVert.equals(start)) {
             E holder = spt.get(currVert); // add to list, use it to get precceding vertex
             if (holder == null) {
                 return new ShortestPath.Failure<>();
