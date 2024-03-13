@@ -1,5 +1,11 @@
 # CSE 373 Projects
 
+Most proud project:
+
+Maze Carver and Solver (Java) 			         	           
+Developed a Kruskal maze carver with the following features: generates visually random-looking mazes, ensures maze solvability, and minimizes wall removal for maze creation
+Implemented a self-built disjoint data sets structure to increase efficiency in maze generation by 22% and employed Dijkstra's algorithm to compute and return the shortest path within the Kruskal-generated maze
+
 You'll use this Git repository for all coding project assignments in this class.
 
 This project is meant to be imported into IntelliJ as a Gradle project.
