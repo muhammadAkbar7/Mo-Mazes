@@ -2,6 +2,8 @@
 
 Most proud project:
 
+**My own coding for the Mazes is located in the Maze Folder with everything that is not labelled "skeleton code"**
+
 Maze Carver and Solver (Java) 			         	           
 Developed a Kruskal maze carver with the following features: generates visually random-looking mazes, ensures maze solvability, and minimizes wall removal for maze creation
 Implemented a self-built disjoint data sets structure to increase efficiency in maze generation by 22% and employed Dijkstra's algorithm to compute and return the shortest path within the Kruskal-generated maze
